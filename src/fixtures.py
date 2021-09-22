@@ -3,5 +3,5 @@ def stake_changes_by_address(address):
     return {"query": query}
 
 def history_changes_by_address(address):
-    query = '{\n    historyElements(orderBy: TIMESTAMP_ASC, filter:{not:{ reward:{equalTo:\"null\"}}, address:{equalTo:\"%s\"},}) {nodes {id timestamp address reward transfer extrinsic }}}' % (address)
+    query = '{\n    historyElements(orderBy: TIMESTAMP_ASC, filter:{not:{ reward:{equalTo:\"null\"}}, address:{equalTo:\"%s\"},}) {nodes {id timestamp address reward }}}' % (address)
     return {"query": query}
