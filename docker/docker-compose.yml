@@ -1,0 +1,62 @@
+version: "3.5"
+services:
+  locust-master:
+    container_name: locust-master
+    build: ./
+    image: subquery-locust-load
+    working_dir: /locust
+    networks:
+      - locust
+    volumes:
+      - ../src:/locust
+    environment:
+      - "WAIT_TIME=${WAIT_TIME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    command: -f locust_run.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --run-time ${DURATION} --headless --html=/locust/report.html
+
+  locust-worker-1:
+    build: ./
+    image: subquery-locust-load
+    working_dir: /locust
+    networks:
+      - locust
+    volumes:
+      - ../src:/locust
+    environment:
+      - "WAIT_TIME=${WAIT_TIME}"
+    depends_on:
+      - locust-master
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP}
+
+  locust-worker-2:
+    build: ./
+    image: subquery-locust-load
+    working_dir: /locust
+    networks:
+      - locust
+    volumes:
+      - ../src:/locust
+    environment:
+      - "WAIT_TIME=${WAIT_TIME}"
+    depends_on:
+      - locust-master
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP}
+
+
+networks:
+  locust:
+    name: locust
