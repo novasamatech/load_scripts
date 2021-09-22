@@ -16,7 +16,7 @@ services:
       options:
         max-size: "100m"
         max-file: "3"
-    command: -f locust_run.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --run-time ${DURATION} --headless --html=/locust/report.html
+    command: -f locust_run.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --run-time ${DURATION} --headless --tags ${TAGS} --html=/locust/report.html
 
   locust-worker-1:
     build: ./
@@ -35,7 +35,7 @@ services:
       options:
         max-size: "100m"
         max-file: "3"
-    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP}
+    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
 
   locust-worker-2:
     build: ./
@@ -54,7 +54,7 @@ services:
       options:
         max-size: "100m"
         max-file: "3"
-    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP}
+    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
 
 
 networks:

@@ -1,6 +1,7 @@
 import time
 import json
-from locust import HttpUser, task, between
+from locust import HttpUser, task, between, events
+from locust.user.task import tag
 from fixtures import stake_changes_by_address, history_changes_by_address
 
 
@@ -12,11 +13,13 @@ class QuickstartUser(HttpUser):
                }
     address = '114SUbKCXjmb9czpWTtS3JANSmNRwVa4mmsMrWYpRG1kDH5'
 
+    @tag('stake_changes')
     @task
     def stake_changes(self):
         data = json.dumps(stake_changes_by_address(self.address))
         self.client.post('/fearless-wallet', data=data, headers=self.headers)
 
+    @tag('history_elements')
     @task
     def history_elements(self):
         data = json.dumps(history_changes_by_address(self.address))
