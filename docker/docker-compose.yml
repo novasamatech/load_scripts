@@ -11,12 +11,13 @@ services:
       - ../src:/locust
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
+      - "SUBQUERY_URL=${SUBQUERY_URL}"
     logging:
       driver: "json-file"
       options:
         max-size: "100m"
         max-file: "3"
-    command: -f locust_run.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --run-time ${DURATION} --headless --tags ${TAGS} --html=/locust/report.html
+    command: -f gov2_subquery_scenario.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --run-time ${DURATION} --headless --tags ${TAGS} --html=/locust/report.html
 
   locust-worker-1:
     build: ./
@@ -28,6 +29,7 @@ services:
       - ../src:/locust
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
+      - "SUBQUERY_URL=${SUBQUERY_URL}"
     depends_on:
       - locust-master
     logging:
@@ -35,7 +37,7 @@ services:
       options:
         max-size: "100m"
         max-file: "3"
-    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
+    command: -f gov2_subquery_scenario.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
 
   locust-worker-2:
     build: ./
@@ -47,6 +49,7 @@ services:
       - ../src:/locust
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
+      - "SUBQUERY_URL=${SUBQUERY_URL}"
     depends_on:
       - locust-master
     logging:
@@ -54,7 +57,7 @@ services:
       options:
         max-size: "100m"
         max-file: "3"
-    command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
+    command: -f gov2_subquery_scenario.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
 
 
 networks:
