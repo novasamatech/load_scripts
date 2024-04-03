@@ -2,32 +2,41 @@ version: "3.5"
 services:
   locust-master:
     container_name: locust-master
-    build: ./
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     image: subquery-locust-load
     working_dir: /locust
     networks:
       - locust
     volumes:
-      - ../src:/locust
+      - ./src:/locust
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
+      - "BASE_URL=${BASE_URL}"
     logging:
       driver: "json-file"
       options:
         max-size: "100m"
         max-file: "3"
-    command: -f locust_run.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --run-time ${DURATION} --headless --tags ${TAGS} --html=/locust/report.html
+    ports:
+      - "8089:8089"  # Expose the default Locust web interface port
+    command: -f locust_run.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --autostart --run-time ${DURATION} --tags ${TAGS} --html=/locust/report.html
+    
 
   locust-worker-1:
-    build: ./
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     image: subquery-locust-load
     working_dir: /locust
     networks:
       - locust
     volumes:
-      - ../src:/locust
+      - ./src:/locust
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
+      - "BASE_URL=${BASE_URL}"
     depends_on:
       - locust-master
     logging:
@@ -38,15 +47,18 @@ services:
     command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
 
   locust-worker-2:
-    build: ./
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     image: subquery-locust-load
     working_dir: /locust
     networks:
       - locust
     volumes:
-      - ../src:/locust
+      - ./src:/locust
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
+      - "BASE_URL=${BASE_URL}"
     depends_on:
       - locust-master
     logging:

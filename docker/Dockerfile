@@ -1,1 +1,1 @@
-FROM locustio/locust:1.5.3
+FROM locustio/locust:2.24.1
