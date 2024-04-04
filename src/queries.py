@@ -1,6 +1,6 @@
 import json
 from substrateinterface import Keypair
-from build_query import build_query
+from build_multichain_query import build_query
 
 
 def stake_changes_by_address(publick_key, key_format):
