@@ -14,6 +14,8 @@ services:
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
       - "BASE_URL=${BASE_URL}"
+      - "HTTP_PROXY=${HTTP_PROXY}"
+      - "VERIFICATION=${VERIFICATION}"
     logging:
       driver: "json-file"
       options:
@@ -37,6 +39,8 @@ services:
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
       - "BASE_URL=${BASE_URL}"
+      - "HTTP_PROXY=${HTTP_PROXY}"
+      - "VERIFICATION=${VERIFICATION}"
     depends_on:
       - locust-master
     logging:
@@ -59,6 +63,8 @@ services:
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
       - "BASE_URL=${BASE_URL}"
+      - "HTTP_PROXY=${HTTP_PROXY}"
+      - "VERIFICATION=${VERIFICATION}"
     depends_on:
       - locust-master
     logging:
