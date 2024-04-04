@@ -3,7 +3,7 @@ import os
 from locust import HttpUser, task
 from locust.user.task import tag
 from locust.user.wait_time import constant
-from queries import stake_changes_by_address, history_changes_by_address
+from queries import stake_changes_by_address, history_changes_by_address, active_stakers
 
 
 class QuickstartUser(HttpUser):
@@ -24,4 +24,10 @@ class QuickstartUser(HttpUser):
     @task
     def history_elements(self):
         data = json.dumps(history_changes_by_address(self.address))
+        self.client.post('/', data=data, headers=self.headers)
+
+    @tag('active_stakers')
+    @task
+    def active_stakers(self):
+        data = json.dumps(active_stakers())
         self.client.post('/', data=data, headers=self.headers)
