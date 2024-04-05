@@ -26,3 +26,22 @@ def active_stakers(publick_key):
   query = build_query(data)
 
   return {"query": query}
+
+
+def casting_votings(publick_key):
+  address = Keypair(public_key=publick_key, ss58_format=42).ss58_address
+  query = '{\n   castingVotings(filter: { voter: {equalTo: \"%s\"}}) {\n    nodes {\n      referendumId\n      standardVote\n      splitVote\n      splitAbstainVote\n    }\n  }\n  \n  delegatorVotings(filter: {delegator: {equalTo: \"%s\"}}) {\n    nodes {\n      vote\n      parent {\n        referendumId\n        delegate {\n          accountId\n        }\n        standardVote\n      }\n    }\n  }\n}' % (address, address)
+  
+  return {"query": query}
+
+
+def casting_votings_referenda(referenda_id: int, aye: bool, split: bool = False, split_abstain: bool = False):
+  query = '{\n    castingVotings(filter:{referendumId:{equalTo:\"%s\"}, or: [{standardVote: {contains: {aye: %s}}},{splitVote: {isNull: %s}},{splitAbstainVote: {isNull: %s}}]}) {\n        nodes {\n            voter\n     \t\tstandardVote\n            splitVote\n            splitAbstainVote\n            delegateId\n            delegatorVotes {\n                nodes {\n                    delegator\n                    vote\n                }\n            }\n        }\n    }\n}' % (referenda_id, aye, split, split_abstain)
+  
+  return {"query": query}
+
+
+def delegates(block: int):
+  query = '{\n   delegates {\n      totalCount\n      nodes {\n        accountId\n        delegators\n        delegatorVotes\n        delegateVotes(filter: {at: {greaterThanOrEqualTo: %s}}) {\n          totalCount\n        }\n      }\n   }\n}' % (block)
+  
+  return {"query": query}
