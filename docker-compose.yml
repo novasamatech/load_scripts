@@ -14,6 +14,8 @@ services:
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
       - "BASE_URL=${BASE_URL}"
+      - "HTTP_PROXY=${HTTP_PROXY}"
+      - "VERIFICATION=${VERIFICATION}"
     logging:
       driver: "json-file"
       options:
@@ -22,7 +24,9 @@ services:
     ports:
       - "8089:8089"  # Expose the default Locust web interface port
     command: -f locust_run.py --master --expect-workers=2 --users ${USERS} --spawn-rate ${RAMP_UP} --autostart --run-time ${DURATION} --tags ${TAGS} --html=/locust/report.html
-    
+    dns:
+      - "1.1.1.1"
+      - "8.8.8.8"
 
   locust-worker-1:
     build:
@@ -37,6 +41,8 @@ services:
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
       - "BASE_URL=${BASE_URL}"
+      - "HTTP_PROXY=${HTTP_PROXY}"
+      - "VERIFICATION=${VERIFICATION}"
     depends_on:
       - locust-master
     logging:
@@ -45,6 +51,9 @@ services:
         max-size: "100m"
         max-file: "3"
     command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
+    dns:
+      - "1.1.1.1"
+      - "8.8.8.8"
 
   locust-worker-2:
     build:
@@ -59,6 +68,8 @@ services:
     environment:
       - "WAIT_TIME=${WAIT_TIME}"
       - "BASE_URL=${BASE_URL}"
+      - "HTTP_PROXY=${HTTP_PROXY}"
+      - "VERIFICATION=${VERIFICATION}"
     depends_on:
       - locust-master
     logging:
@@ -67,7 +78,9 @@ services:
         max-size: "100m"
         max-file: "3"
     command: -f locust_run.py --worker --master-host=locust-master --users ${USERS} --spawn-rate ${RAMP_UP} --tags ${TAGS}
-
+    dns:
+      - "1.1.1.1"
+      - "8.8.8.8"
 
 networks:
   locust:
