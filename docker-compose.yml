@@ -16,6 +16,7 @@ services:
       - "BASE_URL=${BASE_URL}"
       - "HTTP_PROXY=${HTTP_PROXY}"
       - "VERIFICATION=${VERIFICATION}"
+      - "NETWORK=${NETWORK}"
     logging:
       driver: "json-file"
       options:
@@ -43,6 +44,7 @@ services:
       - "BASE_URL=${BASE_URL}"
       - "HTTP_PROXY=${HTTP_PROXY}"
       - "VERIFICATION=${VERIFICATION}"
+      - "NETWORK=${NETWORK}"
     depends_on:
       - locust-master
     logging:
@@ -70,6 +72,7 @@ services:
       - "BASE_URL=${BASE_URL}"
       - "HTTP_PROXY=${HTTP_PROXY}"
       - "VERIFICATION=${VERIFICATION}"
+      - "NETWORK=${NETWORK}"
     depends_on:
       - locust-master
     logging:

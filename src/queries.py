@@ -28,15 +28,15 @@ def active_stakers(publick_key):
   return {"query": query}
 
 
-def casting_votings(publick_key):
-  address = Keypair(public_key=publick_key, ss58_format=42).ss58_address
+def casting_votings(publick_key: str, address_format: int):
+  address = Keypair(public_key=publick_key, ss58_format=address_format).ss58_address
   query = '{\n   castingVotings(filter: { voter: {equalTo: \"%s\"}}) {\n    nodes {\n      referendumId\n      standardVote\n      splitVote\n      splitAbstainVote\n    }\n  }\n  \n  delegatorVotings(filter: {delegator: {equalTo: \"%s\"}}) {\n    nodes {\n      vote\n      parent {\n        referendumId\n        delegate {\n          accountId\n        }\n        standardVote\n      }\n    }\n  }\n}' % (address, address)
   
   return {"query": query}
 
 
 def casting_votings_referenda(referenda_id: int, aye: bool, split: bool = False, split_abstain: bool = False):
-  query = '{\n    castingVotings(filter:{referendumId:{equalTo:\"%s\"}, or: [{standardVote: {contains: {aye: %s}}},{splitVote: {isNull: %s}},{splitAbstainVote: {isNull: %s}}]}) {\n        nodes {\n            voter\n     \t\tstandardVote\n            splitVote\n            splitAbstainVote\n            delegateId\n            delegatorVotes {\n                nodes {\n                    delegator\n                    vote\n                }\n            }\n        }\n    }\n}' % (referenda_id, aye, split, split_abstain)
+  query = '{\n    castingVotings(filter:{referendumId:{equalTo:\"%s\"}, or: [{standardVote: {contains: {aye: %s}}},{splitVote: {isNull: %s}},{splitAbstainVote: {isNull: %s}}]}) {\n        nodes {\n            voter\n     \t\tstandardVote\n            splitVote\n            splitAbstainVote\n            delegateId\n            delegatorVotes {\n                nodes {\n                    delegator\n                    vote\n                }\n            }\n        }\n    }\n}' % (referenda_id, str(aye).lower(), str(split).lower(), str(split_abstain).lower())
   
   return {"query": query}
 
