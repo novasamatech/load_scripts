@@ -30,7 +30,7 @@ def active_stakers(publick_key):
 
 def casting_votings(publick_key: str, address_format: int):
   address = Keypair(public_key=publick_key, ss58_format=address_format).ss58_address
-  query = '{\n   castingVotings(filter: { voter: {equalTo: \"%s\"}}) {\n    nodes {\n      referendumId\n      standardVote\n      splitVote\n      splitAbstainVote\n    }\n  }\n  \n  delegatorVotings(filter: {delegator: {equalTo: \"%s\"}}) {\n    nodes {\n      vote\n      parent {\n        referendumId\n        delegate {\n          accountId\n        }\n        standardVote\n      }\n    }\n  }\n}' % (address, address)
+  query = '{\n   castingVotings(filter: { voter: {equalTo: \"%s\"}}) {\n    nodes {\n      referendumId\n      standardVote\n      splitVote\n      splitAbstainVote\n    }\n  }\n  \n  delegatorVotings(filter: {delegator: {equalTo: \"%s\"}}) {\n    nodes {\n      vote\n      parent {\n        referendumId\n voter\n standardVote\n      }\n    }\n  }\n}' % (address, address)
   
   return {"query": query}
 
