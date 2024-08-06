@@ -16,7 +16,7 @@ class HistoryTasks(TaskSet):
         data = json.dumps(history_changes_by_address(
             random.choice(self.user.addresses), self.user.address_prefics))
         self.client.post('/', data=data, headers=self.headers,
-                         verify=self.verification)
+                         verify=self.verification, name="history_elements")
 
 
 class MultiStakingTasks(TaskSet):
@@ -26,7 +26,7 @@ class MultiStakingTasks(TaskSet):
     def active_stakers(self):
         data = json.dumps(active_stakers(random.choice(self.user.addresses)))
         self.client.post('/', data=data, headers=self.headers,
-                         verify=self.verification)
+                         verify=self.verification, name="active_stakers")
 
     @tag('multistaking')
     @tag('stake_changes')
@@ -35,35 +35,35 @@ class MultiStakingTasks(TaskSet):
         data = json.dumps(stake_changes_by_address(
             random.choice(self.user.addresses), self.user.address_prefics))
         self.client.post('/', data=data, headers=self.headers,
-                         verify=self.verification)
+                         verify=self.verification, name="stake_changes")
 
 
 class GovernanceTasks(TaskSet):
     @tag('governance')
     @tag('gov_casting_votings')
-    @task
+    @task(85)
     def casting_votings(self):
         data = json.dumps(casting_votings(random.choice(self.user.addresses), self.user.address_prefics))
         self.client.post('/', data=data, headers=self.user.headers,
-                         verify=self.user.verification)
+                         verify=self.user.verification, name="gov_casting_votings")
         wait_time = constant_pacing(6)
 
     @tag('governance')
     @tag('gov_casting_votings_referenda')
-    @task
+    @task(5)
     def casting_votings_referenda(self):
         data = json.dumps(casting_votings_referenda(
             random.randint(1, 1000), random.choice([True, False])))
         self.client.post('/', data=data, headers=self.user.headers,
-                         verify=self.user.verification)
+                         verify=self.user.verification, name="gov_casting_votings_referenda")
 
     @tag('governance')
     @tag('gov_delegations')
-    @task
+    @task(10)
     def delegates(self):
         data = json.dumps(delegates(block=23916253))
         self.client.post('/', data=data, headers=self.user.headers,
-                         verify=self.user.verification)
+                         verify=self.user.verification, name="gov_delegations")
 
 
 class QuickstartUser(HttpUser):
