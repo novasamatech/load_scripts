@@ -2,3 +2,4 @@
 .vscode
 __pycache__/
 report.html
+.DS_Store
