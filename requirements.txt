@@ -8,6 +8,7 @@ eth-hash==0.7.0
 eth-keys==0.5.0
 eth-typing==4.1.0
 eth-utils==2.3.1
+idna==3.6
 more-itertools==10.2.0
 py-bip39-bindings==0.1.11
 py-ed25519-zebra-bindings==1.0.1
