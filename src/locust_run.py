@@ -2,7 +2,7 @@ import os
 from locust import HttpUser
 from locust.user.wait_time import constant
 from tasks import GovernanceTasks, HistoryTasks, MultiStakingTasks
-from tasks.opengov_task import OpenGovTasks
+from tasks.opengov_task import SwipeGovTasks
 from utils.data_functions import get_addresses
 
 
@@ -14,4 +14,4 @@ class QuickstartUser(HttpUser):
     addresses, address_prefics = get_addresses()
     print(f'Verification: {verification}')
 
-    tasks = [HistoryTasks, GovernanceTasks, MultiStakingTasks, OpenGovTasks]
+    tasks = [HistoryTasks, GovernanceTasks, MultiStakingTasks, SwipeGovTasks]

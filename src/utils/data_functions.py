@@ -22,14 +22,14 @@ def get_addresses() -> (tuple[list, int]):
     return data['addresses'], data['address_prefix']
 
 
-def get_opengov_data_single() -> str:
+def get_swipegov_data_single() -> str:
 
-  with open('data/opengov_data.json') as f:
-    opengov_data = json.load(f)
+  with open('data/swipegov_data.json') as f:
+    swipegov_data = json.load(f)
 
-    chain = random.choice(opengov_data['chains'])
+    chain = random.choice(swipegov_data['chains'])
     referendum_id = random.choice(chain['referendumIds'])
-    language_iso_code = random.choice(opengov_data["languageIsoCode"])
+    language_iso_code = random.choice(swipegov_data["languageIsoCode"])
 
     return json.dumps({
       "chainId": chain['chainId'],
@@ -38,12 +38,12 @@ def get_opengov_data_single() -> str:
     })
 
 
-def get_opengov_data_list() -> str:
-  with open('data/opengov_data.json') as f:
-    opengov_data = json.load(f)
+def get_swipegov_data_list() -> str:
+  with open('data/swipegov_data.json') as f:
+    swipegov_data = json.load(f)
 
-    chain = random.choice(opengov_data['chains'])
-    language_iso_code = random.choice(opengov_data["languageIsoCode"])
+    chain = random.choice(swipegov_data['chains'])
+    language_iso_code = random.choice(swipegov_data["languageIsoCode"])
 
     return json.dumps({
       "chainId": chain['chainId'],
